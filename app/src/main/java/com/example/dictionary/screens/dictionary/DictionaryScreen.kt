@@ -24,7 +24,6 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), DictionaryContrac
     TextToSpeech.OnInitListener {
     private lateinit var binding: ScreenDictionaryBinding
     private val adapter by lazy { DictionaryAdapter() }
-    private val layoutManager by lazy { LinearLayoutManager(requireContext()) }
     private var query: String? = null
     private val presenter = DictionaryPresenter(this)
     private val handler by lazy { Handler(Looper.getMainLooper()) }
@@ -38,7 +37,7 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), DictionaryContrac
         textOut = TextToSpeech(requireContext(), this)
 
         binding.recycler.adapter = adapter
-        binding.recycler.layoutManager = layoutManager
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
 
         adapter.setChangeFavouriteListener { _, data ->
             presenter.updateData(data)
@@ -58,10 +57,6 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), DictionaryContrac
             startSpeechToText()
         }
 
-        binding.btnSelected.setOnClickListener {
-            presenter.clickSelectedWords()
-        }
-
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -76,7 +71,7 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), DictionaryContrac
                 this@DictionaryScreen.query = query
                 if (query == null) {
                     presenter.allWords()
-                    layoutManager.scrollToPosition(0)
+//                    layoutManager.scrollToPosition(0)
                 } else {
                     handler.removeCallbacksAndMessages(null)
                     handler.postDelayed({

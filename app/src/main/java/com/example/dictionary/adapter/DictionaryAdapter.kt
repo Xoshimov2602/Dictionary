@@ -9,7 +9,7 @@ import com.example.dictionary.R
 import com.example.dictionary.databinding.ItemDictionaryBinding
 import com.example.dictionary.source.entity.DictionaryEntity
 
-class DictionaryAdapter() :
+class DictionaryAdapter :
     ListAdapter<DictionaryEntity, DictionaryAdapter.VHolder>(DictionaryDiffUtil) {
     private var changeFavouriteListener : ((Int, DictionaryEntity) -> Unit)?= null
     private var listenWordListener : ((DictionaryEntity) -> Unit)? = null
@@ -33,7 +33,6 @@ class DictionaryAdapter() :
 
     inner class VHolder(val binding: ItemDictionaryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         init {
             binding.buttonFavourite.setOnClickListener{
                 getItem(adapterPosition).isFavourite= getItem(adapterPosition).isFavourite?.xor(1)
