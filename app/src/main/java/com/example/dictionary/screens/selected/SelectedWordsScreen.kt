@@ -12,8 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dictionary.R
-import com.example.dictionary.adapter.DictionaryAdapter
-import com.example.dictionary.databinding.ScreenDictionaryBinding
+import com.example.dictionary.adapter.DictionaryAdapterList
 import com.example.dictionary.databinding.ScreenSelectedWordsBinding
 import com.example.dictionary.source.entity.DictionaryEntity
 import java.util.Locale
@@ -21,7 +20,7 @@ import java.util.Locale
 class SelectedWordsScreen : Fragment(R.layout.screen_selected_words), SelectedWordsContract.View,
     TextToSpeech.OnInitListener {
     private lateinit var binding: ScreenSelectedWordsBinding
-    private val adapter by lazy { DictionaryAdapter() }
+    private val adapter by lazy { DictionaryAdapterList() }
     private val presenter = SelectedWordsPresenter(this)
     private val query: String? = null
     private val handler by lazy { Handler(Looper.getMainLooper()) }

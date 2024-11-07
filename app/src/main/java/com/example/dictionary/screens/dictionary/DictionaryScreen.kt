@@ -7,7 +7,6 @@ import android.os.Looper
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.view.View
-import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dictionary.R
-import com.example.dictionary.adapter.DictionaryAdapter
+import com.example.dictionary.adapter.DictionaryAdapterList
 import com.example.dictionary.databinding.ScreenDictionaryBinding
 import com.example.dictionary.source.entity.DictionaryEntity
 import java.util.Locale
@@ -23,7 +22,7 @@ import java.util.Locale
 class DictionaryScreen : Fragment(R.layout.screen_dictionary), DictionaryContract.View,
     TextToSpeech.OnInitListener {
     private lateinit var binding: ScreenDictionaryBinding
-    private val adapter by lazy { DictionaryAdapter() }
+    private val adapter by lazy { DictionaryAdapterList() }
     private var query: String? = null
     private val presenter = DictionaryPresenter(this)
     private val handler by lazy { Handler(Looper.getMainLooper()) }

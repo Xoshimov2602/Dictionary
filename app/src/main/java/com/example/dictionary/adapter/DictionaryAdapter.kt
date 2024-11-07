@@ -1,63 +1,71 @@
 package com.example.dictionary.adapter
 
+import android.annotation.SuppressLint
+import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.dictionary.R
 import com.example.dictionary.databinding.ItemDictionaryBinding
-import com.example.dictionary.source.entity.DictionaryEntity
 
-class DictionaryAdapter :
-    ListAdapter<DictionaryEntity, DictionaryAdapter.VHolder>(DictionaryDiffUtil) {
-    private var changeFavouriteListener : ((Int, DictionaryEntity) -> Unit)?= null
-    private var listenWordListener : ((DictionaryEntity) -> Unit)? = null
+class DictionaryAdapter : Adapter<DictionaryAdapter.VHolder>() {
+    private var cursor: Cursor? = null
 
-    object DictionaryDiffUtil : DiffUtil.ItemCallback<DictionaryEntity>() {
-        override fun areItemsTheSame(
-            oldItem: DictionaryEntity,
-            newItem: DictionaryEntity
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
+    private var listener: ((Int) -> Unit)? = null
+    private var favListener : ((Int, Int) -> Unit)? = null
 
-        override fun areContentsTheSame(
-            oldItem: DictionaryEntity,
-            newItem: DictionaryEntity
-        ): Boolean {
-            return oldItem == newItem
-        }
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun setCursor(cursor: Cursor) {
+        this.cursor = cursor
+        notifyDataSetChanged()
     }
 
-    inner class VHolder(val binding: ItemDictionaryBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.buttonFavourite.setOnClickListener{
-                getItem(adapterPosition).isFavourite= getItem(adapterPosition).isFavourite?.xor(1)
-                changeFavouriteListener?.invoke(adapterPosition, getItem(adapterPosition))
-                notifyItemChanged(adapterPosition)
-            }
+    inner class VHolder(private val itemDictionaryBinding: ItemDictionaryBinding) :
+        ViewHolder(itemDictionaryBinding.root) {
 
-            binding.buttonListen.setOnClickListener {
-                listenWordListener?.invoke(getItem(adapterPosition))
+        init {
+            itemDictionaryBinding.root.setOnClickListener {
+                cursor?.let {
+                    it.moveToPosition(adapterPosition)
+                    listener?.invoke(it.getInt(it.getColumnIndex("id") ?: 0))
+                }
+            }
+            itemDictionaryBinding.buttonFavourite.setOnClickListener {
+                cursor?.let {
+                    it.moveToPosition(adapterPosition)
+                    favListener?.invoke(
+                        it.getInt(it.getColumnIndex("id") ?: 0),
+                        it.getInt(it.getColumnIndex("is_favourite") ?: 0)
+                    )
+                }
             }
         }
 
         fun bind(position: Int) {
-            binding.textEnglish.text = getItem(position).english
-            binding.textUzbek.text = getItem(position).uzbek
-//            if (getItem(position).isFavourite == 0) {
-//                binding.buttonFavourite.setImageResource(R.drawable.ic_unselected)
-//            } else binding.buttonFavourite.setImageResource(R.drawable.ic_selected)
-            binding.buttonFavourite.setImageResource(if (getItem(position).isFavourite == 0) R.drawable.ic_unselected else R.drawable.ic_selected)
+            cursor?.let {
+                it.moveToPosition(position)
+                itemDictionaryBinding.textUzbek.text = it.getString(it.getColumnIndex("uzbek") ?: 0)
+                itemDictionaryBinding.textEnglish.text =
+                    it.getString(it.getColumnIndex("english") ?: 0)
+                val isFav = it.getInt(it.getColumnIndex("is_favourite") ?: 0)
+
+                itemDictionaryBinding.buttonFavourite.setImageResource(if (isFav == 0) R.drawable.ic_unselected else R.drawable.ic_selected )
+            }
         }
+    }
+
+    fun setOnClickListener(l: (Int) -> Unit) {
+        listener = l
+    }
+
+    fun setOnFavClickListener(l: (Int, Int) -> Unit) {
+        favListener = l
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHolder {
         return VHolder(
-            binding = ItemDictionaryBinding.inflate(
+            ItemDictionaryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -65,13 +73,9 @@ class DictionaryAdapter :
         )
     }
 
+    override fun getItemCount(): Int = cursor?.count ?: 0
+
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         holder.bind(position)
-    }
-    fun setChangeFavouriteListener(block: (Int, DictionaryEntity) -> Unit) {
-        changeFavouriteListener = block
-    }
-    fun setListenWordListener (block : (DictionaryEntity) -> Unit) {
-        listenWordListener = block
     }
 }
