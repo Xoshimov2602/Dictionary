@@ -1,4 +1,4 @@
-package com.example.dictionary.source
+package com.example.dictionary.source.repository
 
 import android.content.Context
 import androidx.room.Database
@@ -16,7 +16,7 @@ abstract class AppDatabase : RoomDatabase() {
             private set
 
         fun init (context: Context) {
-            if (!(::instance.isInitialized)) {
+            if (!(Companion::instance.isInitialized)) {
                 instance = Room.databaseBuilder(context, AppDatabase::class.java, "Dictionary.db")
                     .createFromAsset("dictionary.db")
                     .allowMainThreadQueries()

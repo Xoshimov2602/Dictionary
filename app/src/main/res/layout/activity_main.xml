@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.MainActivity">
+    tools:context=".presentation.screens.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
@@ -13,28 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/materialCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/navigation" />
+        app:navGraph="@navigation/my_graph" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#3F51B5"
+        app:cardCornerRadius="10dp"
+        android:elevation="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
+            android:background="#FFFFFF"
+            app:itemTextColor="@color/dark_blue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:menu="@menu/menu" />
-
     </com.google.android.material.card.MaterialCardView>
 
 

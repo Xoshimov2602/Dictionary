@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.skydoves.elasticviews.ElasticCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="16dp"
-    android:orientation="vertical"
+    android:layout_marginHorizontal="8dp"
     android:background="?android:selectableItemBackground"
-    android:paddingVertical="4dp">
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="12dp"
+    app:cardView_duration="100"
+    app:cardView_scale="0.9"
+    app:cardBackgroundColor="@color/white">
 
-    <TextView
-        android:id="@+id/textEnglish"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:orientation="vertical"
+        android:paddingVertical="4dp"
+        tools:ignore="ExtraText">
 
-    <TextView
-        android:id="@+id/textUzbek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@id/textEnglish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        <TextView
+            android:id="@+id/textEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/buttonListen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:src="@drawable/ic_listen"
-        android:tint="#3F51B5"
-        app:layout_constraintRight_toLeftOf="@id/buttonFavourite"
-        app:layout_constraintTop_toTopOf="@id/buttonFavourite"
-        app:layout_constraintBottom_toBottomOf="@id/buttonFavourite"
-        />
+        <TextView
+            android:id="@+id/textUzbek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:textSize="14sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            app:layout_constraintTop_toBottomOf="@id/textEnglish"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/buttonFavourite"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:scaleType="centerCrop"
-        android:background="?android:selectableItemBackgroundBorderless"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:tint="#3F51B5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/ic_selected"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.skydoves.elasticviews.ElasticImageView
+            android:id="@+id/buttonFavourite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            android:background="?android:selectableItemBackgroundBorderless"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:tint="#3F51B5"
+            app:imageView_duration="300"
+            app:imageView_scale="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_selected"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.skydoves.elasticviews.ElasticCardView>

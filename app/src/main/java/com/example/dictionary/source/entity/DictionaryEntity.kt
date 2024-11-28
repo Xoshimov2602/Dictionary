@@ -3,6 +3,7 @@ package com.example.dictionary.source.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "dictionary")
 data class DictionaryEntity (
@@ -15,4 +16,4 @@ data class DictionaryEntity (
     val countable : String?,
     val transcript : String?
 
-)
+) : Serializable

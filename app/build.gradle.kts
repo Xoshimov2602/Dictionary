@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.safeArg)
+        alias(libs.plugins.safeArg)
 
     id("kotlin-kapt")
 }
@@ -60,7 +60,17 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
 
-
     //bottom nav
     implementation ("com.google.android.material:material:1.2.0")
+
+    implementation ("com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9")
+
+    //circle image view
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    //elastic views
+    implementation ("com.github.skydoves:elasticviews:2.1.0")
+
+//    //tapadoo
+//    implementation ("com.github.tapadoo:alerter:7.2.4")
 }

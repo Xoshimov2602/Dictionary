@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.MainActivity">
+    tools:context=".presentation.screens.MainActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -17,35 +17,55 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Dictionary"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_gravity="center"
+            android:focusable="true"
+            app:iconifiedByDefault="false"
+            android:layout_height="46dp"
             android:layout_margin="6dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_search_view" />
+            android:background="@drawable/bg_search_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_mic"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <com.skydoves.elasticviews.ElasticImageView
             android:id="@+id/btn_mic"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-
-            android:layout_marginRight="10dp"
+            android:layout_width="46dp"
+            android:layout_height="0dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="6dp"
             android:background="@drawable/bg_mic"
+            android:layout_marginVertical="2dp"
             android:src="@drawable/ic_mic"
-            android:tint="#2196F3"
-            />
+            android:tint="#3F51B5"
+            app:imageView_duration="300"
+            android:padding="5dp"
+            app:imageView_scale="0.7"
+            app:layout_constraintBottom_toBottomOf="@id/searchView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/searchView" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/status" />
 

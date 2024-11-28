@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/my_graph"
+    app:startDestination="@id/dictionaryScreen2">
+
+    <fragment
+        android:id="@+id/dictionaryScreen2"
+        android:name="com.example.dictionary.presentation.screens.dictionary.DictionaryScreen"
+        android:label="DictionaryScreen" >
+        <action
+            android:id="@+id/action_dictionaryScreen2_to_detailsScreen"
+            app:destination="@id/detailsScreen" />
+        <action
+            android:id="@+id/action_dictionaryScreen2_to_selectedWordsScreen2"
+            app:destination="@id/selectedWordsScreen2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsScreen"
+        android:name="com.example.dictionary.presentation.screens.details.DetailsScreen"
+        android:label="DetailsScreen" >
+        <argument
+            android:name="data"
+            app:argType="com.example.dictionary.source.entity.DictionaryEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectedWordsScreen2"
+        android:name="com.example.dictionary.presentation.screens.selected.SelectedScreen"
+        android:label="SelectedWordsScreen" >
+        <action
+            android:id="@+id/action_selectedWordsScreen2_to_detailsScreen"
+            app:destination="@id/detailsScreen" />
+    </fragment>
+</navigation>
