@@ -49,8 +49,8 @@
 
         <com.skydoves.elasticviews.ElasticImageView
             android:id="@+id/buttonFavourite"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:padding="3dp"
             android:scaleType="centerCrop"
             android:background="?android:selectableItemBackgroundBorderless"

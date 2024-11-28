@@ -5,22 +5,17 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.tts.TextToSpeech
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.dictionary.R
-import com.example.dictionary.databinding.PopupLayoutBinding
-import androidx.lifecycle.Observer
 import com.example.dictionary.databinding.ScreenDetailsBinding
 import java.util.Locale
 
@@ -41,16 +36,12 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
 
         binding.apply {
             btnFavourite.setImageResource(if (data.data.isFavourite == 0) R.drawable.ic_unselected else R.drawable.ic_selected)
-
+            textWord.text = data.data.english
             textEnglish.text = data.data.english
             textUzbek.text = data.data.uzbek
             transcription.text = data.data.transcript
             countable.text = data.data.countable
             type.text = data.data.type
-            copyEnglish.setOnClickListener{
-                showPopUp(copyEnglish.rootView, textEnglish.text.toString())
-                viewModel.clickCopy(textEnglish.text.toString())
-            }
 
             viewModel.copyLiveData.observe(viewLifecycleOwner, copyObserver)
 
@@ -89,6 +80,7 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
                     textUzbek.text = data.data.english
 
                 }
+                isEnglish = !isEnglish
 
                 val rotateAnimator =
                     ObjectAnimator.ofFloat(
@@ -99,19 +91,20 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
                     )
                 rotateAnimator.duration = 200
                 rotateAnimator.start()
-                isEnglish = !isEnglish
+
             }
 
             copyEnglish.setOnClickListener {
-                val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                Log.d("YYY", "onViewCreated: I am workinh")
+                val clipboard =
+                    context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Copied", textEnglish.text)
                 clipboard.setPrimaryClip(clip)
+                viewModel.clickCopy(textEnglish.text.toString())
             }
 
             btnSpeaker.setOnClickListener {
-                if (isEnglish)
-                    viewModel.textToSpeech(textEnglish.text.toString())
-                else viewModel.textToSpeech(textUzbek.text.toString())
+                viewModel.textToSpeech(textEnglish.text.toString())
             }
 
             btnBack.setOnClickListener {
@@ -121,7 +114,7 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
             btnFavourite.setOnClickListener {
                 viewModel.updateItem(data.data)
                 data.data.isFavourite
-                btnFavourite.setImageResource(if (detector!! % 2 == 0) R.drawable.ic_unselected else R.drawable.ic_selected)
+                btnFavourite.setImageResource(if (detector!! % 2 == 0) R.drawable.ic_selected else R.drawable.ic_unselected)
                 detector = detector!! + 1
             }
         }
@@ -137,28 +130,8 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
             }
         } else Toast.makeText(requireContext(), "FAIL", Toast.LENGTH_SHORT).show()
     }
-    private val copyObserver = Observer <String> {
-        viewModel.clickCopy(it)
-    }
 
-    fun showPopUp(anchorView: View, message: String) {
-        val popupView = LayoutInflater.from(anchorView.context).inflate(R.layout.popup_layout, null)
-        val pBinding = PopupLayoutBinding.inflate(layoutInflater, null, false)
-        pBinding.popupText.text = message
-        val popupWindow = PopupWindow(
-            popupView,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.setBackgroundDrawable(null)
-        popupWindow.elevation = 10f
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (popupWindow.isShowing) {
-                popupWindow.dismiss()
-            }
-        }, 2000)
+    private val copyObserver = Observer<String> {
+        Toast.makeText(requireContext(), "$it copied to clipboard", Toast.LENGTH_SHORT).show()
     }
 }

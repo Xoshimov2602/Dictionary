@@ -1,8 +1,7 @@
-package com.example.dictionary.presentation.screens
+package com.example.dictionary.presentation.activity
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -43,10 +42,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destinaton, _  ->
             if (bottomNavigationScreens.contains(destinaton.id)) {
                 binding.bottomNav.visibility = View.GONE
-                binding.materialCardView.visibility = View.GONE
             } else {
                 binding.bottomNav.visibility = View.VISIBLE
-                binding.materialCardView.visibility = View.VISIBLE
             }
         }
 
