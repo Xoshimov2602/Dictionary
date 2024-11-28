@@ -5,7 +5,9 @@ import com.example.dictionary.source.entity.DictionaryEntity
 
 interface DetailsViewModelContract {
     val textOut : LiveData<String>
+    val copyLiveData : LiveData<String>
 
     fun textToSpeech (word : String)
     fun updateItem (data : DictionaryEntity)
+    fun clickCopy (text : String)
 }

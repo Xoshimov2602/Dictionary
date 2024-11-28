@@ -12,6 +12,7 @@ class DetailsViewModel : DetailsViewModelContract, ViewModel() {
     private val repository : AppRepository = AppRepositoryImpl.getRepository()
 
     override val textOut = MutableLiveData<String>()
+    override val copyLiveData = MutableLiveData<String>()
 
     override fun textToSpeech(word: String) {
         textOut.value = word
@@ -19,5 +20,8 @@ class DetailsViewModel : DetailsViewModelContract, ViewModel() {
 
     override fun updateItem(data: DictionaryEntity) {
         repository.update(data.copy(isFavourite = data.isFavourite?.xor(1)))
+    }
+    override fun clickCopy(text: String) {
+        copyLiveData.value = text
     }
 }

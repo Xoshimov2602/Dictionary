@@ -5,8 +5,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.tts.TextToSpeech
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.dictionary.R
+import com.example.dictionary.databinding.PopupLayoutBinding
+import androidx.lifecycle.Observer
 import com.example.dictionary.databinding.ScreenDetailsBinding
 import java.util.Locale
 
@@ -40,6 +47,12 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
             transcription.text = data.data.transcript
             countable.text = data.data.countable
             type.text = data.data.type
+            copyEnglish.setOnClickListener{
+                showPopUp(copyEnglish.rootView, textEnglish.text.toString())
+                viewModel.clickCopy(textEnglish.text.toString())
+            }
+
+            viewModel.copyLiveData.observe(viewLifecycleOwner, copyObserver)
 
             languageChanger.setOnClickListener {
                 if (!isEnglish) {
@@ -123,5 +136,29 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
                 }
             }
         } else Toast.makeText(requireContext(), "FAIL", Toast.LENGTH_SHORT).show()
+    }
+    private val copyObserver = Observer <String> {
+        viewModel.clickCopy(it)
+    }
+
+    fun showPopUp(anchorView: View, message: String) {
+        val popupView = LayoutInflater.from(anchorView.context).inflate(R.layout.popup_layout, null)
+        val pBinding = PopupLayoutBinding.inflate(layoutInflater, null, false)
+        pBinding.popupText.text = message
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.setBackgroundDrawable(null)
+        popupWindow.elevation = 10f
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (popupWindow.isShowing) {
+                popupWindow.dismiss()
+            }
+        }, 2000)
     }
 }

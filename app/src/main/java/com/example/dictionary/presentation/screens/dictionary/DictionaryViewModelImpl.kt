@@ -54,4 +54,6 @@ class DictionaryViewModelImpl : DictionaryViewModel, ViewModel() {
     override fun getWordsByQuery(query: String) {
         wordCursorLiveData.value = repository.getWordsByQuery(query)
     }
+
+
 }
