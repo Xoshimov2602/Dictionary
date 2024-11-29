@@ -27,6 +27,8 @@ import com.example.dictionary.databinding.PopupLayoutBinding
 import com.example.dictionary.databinding.ScreenDictionaryBinding
 import com.example.dictionary.presentation.adapter.DictionaryAdapter
 import com.example.dictionary.source.entity.DictionaryEntity
+import com.example.dictionary.source.repository.AppRepository
+import com.example.dictionary.source.repository.AppRepositoryImpl
 import java.util.Locale
 
 class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnInitListener {
@@ -36,6 +38,8 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
     private lateinit var textOut: TextToSpeech
     private val request = 1
     private var query: String? = null
+    //my last variant was to take instance of repository here, because I had less time
+    private val repository: AppRepository = AppRepositoryImpl.getRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +54,7 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
             binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         }
 
-
+        binding.searchView.queryHint = "Search"
 
         textOut = TextToSpeech(requireContext(), this)
 
@@ -73,25 +77,32 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                this@DictionaryScreen.query = query
-                if (query == null || query.isEmpty()) {
-                    vm.getAllWords()
+                if (query.isNullOrEmpty()) {
+                    this@DictionaryScreen.query = "" // Clear the query
+                    vm.getAllWords() // Fetch all words
                 } else {
-                    vm.getWordsByQuery(query)
+                    this@DictionaryScreen.query = query // Update query state
+                    adapter.updateQuery(query) // Pass query to the adapter for highlighting
+                    vm.getWordsByQuery(query) // Fetch filtered words
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                this@DictionaryScreen.query = newText
-                if (newText == null || newText.isEmpty()) {
-                    vm.getAllWords()
+                if (newText.isNullOrEmpty()) {
+                    this@DictionaryScreen.query = "" // Clear the query
+                    adapter.updateQuery("") // Clear query in the adapter for highlighting
+                    vm.getAllWords() // Fetch all words
                 } else {
-                    vm.getWordsByQuery(newText)
+                    this@DictionaryScreen.query = newText // Update query state
+                    adapter.updateQuery(newText) // Pass query to the adapter for highlighting
+                    vm.getWordsByQuery(newText) // Fetch filtered words
                 }
                 return true
             }
         })
+
+
 
         binding.searchView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -155,5 +166,30 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
         }
     }
 
+//    private fun updateAdapterList() {
+//        val queryText = query ?: ""
+//        if (queryText.isEmpty()) {
+//            val resultCursor = repository.getCursor()
+//            adapter.setCursor(resultCursor)
+//            adapter.updateQuery("")
+//        } else {
+//            val filteredCursor = repository.getWordsByQuery(queryText)
+//            adapter.setCursor(filteredCursor)
+//            adapter.updateQuery(queryText)
+//        }
+//    }
 
+    private fun updateAdapterList() {
+        val queryText = query ?: ""
+
+        if (queryText.isEmpty()) {
+            val resultCursor = repository.getCursor()
+            adapter.setCursor(resultCursor)
+            adapter.updateQuery("") // Clear query in adapter
+        } else {
+            val filteredCursor = repository.getWordsByQuery(queryText)
+            adapter.setCursor(filteredCursor)
+            adapter.updateQuery(queryText) // Update query in adapter
+        }
+    }
 }

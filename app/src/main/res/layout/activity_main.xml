@@ -23,7 +23,8 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             android:background="#FFFFFF"
-            app:itemTextColor="@color/dark_blue"
+            app:itemTextColor="@color/white"
+            app:backgroundTint="@color/dark_blue"
             style="@style/Widget.Design.BottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/dictionaryScreen2"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/bg_icon_menu"
         android:title="Home" />
     <item
         android:id="@+id/selectedWordsScreen2"

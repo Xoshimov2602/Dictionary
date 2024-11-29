@@ -51,8 +51,7 @@ class DictionaryAdapter : Adapter<DictionaryAdapter.VHolder>() {
             val data = getData(position)
 
             binding.apply {
-                // Apply text highlighting to the Uzbek and English fields
-                textUzbek.text = data.uzbek
+                textUzbek.text = SpannedString(textUzbek.text.toString())
                 textEnglish.text = data.english?.let { highlightQueryText(it, query) }
                 buttonFavourite.setImageResource(
                     if (data.isFavourite == 0) R.drawable.ic_unselected else R.drawable.ic_selected
@@ -106,7 +105,7 @@ class DictionaryAdapter : Adapter<DictionaryAdapter.VHolder>() {
         val startIndex = fullText.indexOf(query, ignoreCase = true)
         if (startIndex >= 0) {
             spannableString.setSpan(
-                ForegroundColorSpan(Color.GRAY),
+                ForegroundColorSpan(Color.RED),
                 startIndex,
                 startIndex + query.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
