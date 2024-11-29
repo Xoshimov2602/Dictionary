@@ -14,7 +14,7 @@ interface AppRepository {
 
     fun getWordById(id: Int): LiveData<DictionaryEntity>
 
-    fun update(dictionaryEntity: DictionaryEntity)
+    fun update(dictionaryEntity: DictionaryEntity) : Int
 
     fun getWordsByQuery (query : String) : Cursor
 }

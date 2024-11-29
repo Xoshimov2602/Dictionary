@@ -51,7 +51,8 @@ class DictionaryAdapter : Adapter<DictionaryAdapter.VHolder>() {
             val data = getData(position)
 
             binding.apply {
-                textUzbek.text = SpannedString(textUzbek.text.toString())
+//                textUzbek.text = SpannedString(textUzbek.text.toString())
+                textUzbek.text = data.uzbek
                 textEnglish.text = data.english?.let { highlightQueryText(it, query) }
                 buttonFavourite.setImageResource(
                     if (data.isFavourite == 0) R.drawable.ic_unselected else R.drawable.ic_selected

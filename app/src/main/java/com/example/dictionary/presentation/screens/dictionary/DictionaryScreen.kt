@@ -78,25 +78,25 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrEmpty()) {
-                    this@DictionaryScreen.query = "" // Clear the query
-                    vm.getAllWords() // Fetch all words
+                    this@DictionaryScreen.query = ""
+                    vm.getAllWords()
                 } else {
-                    this@DictionaryScreen.query = query // Update query state
-                    adapter.updateQuery(query) // Pass query to the adapter for highlighting
-                    vm.getWordsByQuery(query) // Fetch filtered words
+                    this@DictionaryScreen.query = query
+                    adapter.updateQuery(query)
+                    vm.getWordsByQuery(query)
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
-                    this@DictionaryScreen.query = "" // Clear the query
-                    adapter.updateQuery("") // Clear query in the adapter for highlighting
-                    vm.getAllWords() // Fetch all words
+                    this@DictionaryScreen.query = ""
+                    adapter.updateQuery("")
+                    vm.getAllWords()
                 } else {
-                    this@DictionaryScreen.query = newText // Update query state
-                    adapter.updateQuery(newText) // Pass query to the adapter for highlighting
-                    vm.getWordsByQuery(newText) // Fetch filtered words
+                    this@DictionaryScreen.query = newText
+                    adapter.updateQuery(newText)
+                    vm.getWordsByQuery(newText)
                 }
                 return true
             }
@@ -163,33 +163,6 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
             if (!result.isNullOrEmpty()) {
                 binding.searchView.setQuery(result[0], false)
             }
-        }
-    }
-
-//    private fun updateAdapterList() {
-//        val queryText = query ?: ""
-//        if (queryText.isEmpty()) {
-//            val resultCursor = repository.getCursor()
-//            adapter.setCursor(resultCursor)
-//            adapter.updateQuery("")
-//        } else {
-//            val filteredCursor = repository.getWordsByQuery(queryText)
-//            adapter.setCursor(filteredCursor)
-//            adapter.updateQuery(queryText)
-//        }
-//    }
-
-    private fun updateAdapterList() {
-        val queryText = query ?: ""
-
-        if (queryText.isEmpty()) {
-            val resultCursor = repository.getCursor()
-            adapter.setCursor(resultCursor)
-            adapter.updateQuery("") // Clear query in adapter
-        } else {
-            val filteredCursor = repository.getWordsByQuery(queryText)
-            adapter.setCursor(filteredCursor)
-            adapter.updateQuery(queryText) // Update query in adapter
         }
     }
 }

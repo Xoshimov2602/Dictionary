@@ -28,7 +28,7 @@ interface DictionaryDao {
     fun getAllSelectedByQuery(text: String): List<DictionaryEntity>
 
     @Query("UPDATE dictionary SET is_favourite = :fav WHERE id = :id")
-    fun updateFav(id: Int, fav: Int)
+    fun updateFav(id: Int, fav: Int) : Int
 
     @Query("SELECT * FROM dictionary WHERE id = :id")
     fun getWordById(id: Int): LiveData<DictionaryEntity>

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_graph"
-    app:startDestination="@id/dictionaryScreen2">
+    app:startDestination="@id/splashScreen">
 
     <fragment
         android:id="@+id/dictionaryScreen2"
+        tools:layout="@layout/screen_dictionary"
         android:name="com.example.dictionary.presentation.screens.dictionary.DictionaryScreen"
         android:label="DictionaryScreen" >
         <action
@@ -17,6 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsScreen"
+        tools:layout="@layout/screen_details"
         android:name="com.example.dictionary.presentation.screens.details.DetailsScreen"
         android:label="DetailsScreen" >
         <argument
@@ -25,10 +28,22 @@
     </fragment>
     <fragment
         android:id="@+id/selectedWordsScreen2"
+        tools:layout="@layout/screen_selected_words"
         android:name="com.example.dictionary.presentation.screens.selected.SelectedScreen"
         android:label="SelectedWordsScreen" >
         <action
             android:id="@+id/action_selectedWordsScreen2_to_detailsScreen"
             app:destination="@id/detailsScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashScreen"
+        tools:layout="@layout/screen_splash"
+        android:name="com.example.dictionary.presentation.screens.splash.SplashScreen"
+        android:label="SplashScreen" >
+        <action
+            android:id="@+id/action_splashScreen_to_dictionaryScreen2"
+            app:destination="@id/dictionaryScreen2"
+            app:popUpTo="@id/splashScreen"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

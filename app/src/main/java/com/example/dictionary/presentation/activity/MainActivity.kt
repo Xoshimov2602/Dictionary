@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
 
 
         val bottomNavigationScreens = setOf(
-            R.id.detailsScreen
+            R.id.detailsScreen,
+            R.id.splashScreen
         )
 
         navController.addOnDestinationChangedListener { _, destinaton, _  ->

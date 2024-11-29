@@ -23,9 +23,10 @@ class DictionaryViewModelImpl : DictionaryViewModel, ViewModel() {
     override val textOut = MutableLiveData<String>()
     override val textIn = MutableLiveData<Unit>()
 
-    override fun updateItem(dictionaryEntity: DictionaryEntity) {
-        repository.update(dictionaryEntity.copy(isFavourite = dictionaryEntity.isFavourite?.xor(1)))
+    override fun updateItem(dictionaryEntity: DictionaryEntity)  {
+       val updated =  repository.update(dictionaryEntity.copy(isFavourite = dictionaryEntity.isFavourite?.xor(1)))
         wordCursorLiveData.value = repository.getCursor()
+        repository.getWordById(updated)
     }
 
     override fun getAllWords() {

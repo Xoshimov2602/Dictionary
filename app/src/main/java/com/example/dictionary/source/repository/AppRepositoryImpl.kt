@@ -32,8 +32,9 @@ class AppRepositoryImpl(private val dictionaryDao: DictionaryDao) : AppRepositor
 
     override fun getWordById(id: Int): LiveData<DictionaryEntity> = dictionaryDao.getWordById(id)
 
-    override fun update(dictionaryEntity: DictionaryEntity) {
+    override fun update(dictionaryEntity: DictionaryEntity) : Int {
         dictionaryDao.insert(dictionaryEntity)
+        return dictionaryEntity.id
     }
 
     override fun getWordsByQuery(query: String): Cursor {
