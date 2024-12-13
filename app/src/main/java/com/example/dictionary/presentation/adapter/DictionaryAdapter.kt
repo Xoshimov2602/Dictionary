@@ -8,6 +8,7 @@ import android.text.SpannedString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.dictionary.R
@@ -57,6 +58,8 @@ class DictionaryAdapter : Adapter<DictionaryAdapter.VHolder>() {
                 buttonFavourite.setImageResource(
                     if (data.isFavourite == 0) R.drawable.ic_unselected else R.drawable.ic_selected
                 )
+                val animation = AnimationUtils.loadAnimation(root.context, R.anim.item_anim)
+                root.startAnimation(animation)
             }
         }
     }

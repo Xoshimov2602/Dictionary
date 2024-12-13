@@ -4,15 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupWindow
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.dictionary.R
-import com.example.dictionary.databinding.PopupLayoutBinding
 import com.example.dictionary.databinding.ScreenDictionaryBinding
 import com.example.dictionary.presentation.adapter.DictionaryAdapter
 import com.example.dictionary.source.entity.DictionaryEntity
@@ -38,6 +32,10 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
     private lateinit var textOut: TextToSpeech
     private val request = 1
     private var query: String? = null
+    private var adapterPosition = 0
+    private lateinit var layoutManager: LinearLayoutManager
+    private var changer = false
+
     //my last variant was to take instance of repository here, because I had less time
     private val repository: AppRepository = AppRepositoryImpl.getRepository()
 
@@ -49,13 +47,11 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.recycler.adapter = adapter
+        layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.layoutManager = layoutManager
 
-        if (binding.recycler.layoutManager == null) {
-            binding.recycler.layoutManager = LinearLayoutManager(requireContext())
-        }
 
         binding.searchView.queryHint = "Search"
-
         textOut = TextToSpeech(requireContext(), this)
 
         vm.textOut.observe(viewLifecycleOwner) { word ->
@@ -66,9 +62,24 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
 
         adapter.setOnClickListener { vm.openDetails(it) }
         adapter.setOnFavClickListener {
-            vm.updateItem(it)
+            val childView = binding.recycler.findViewHolderForAdapterPosition(0)?.itemView
+            if (childView != null) {
+                adapterPosition = layoutManager.findFirstVisibleItemPosition()
+            }
+            vm.updateItem(changer , binding.searchView.query.toString(), it)
         }
 
+        binding.icLanguageChanger.setOnClickListener {
+            if (changer) {
+                binding.img1.setImageResource(R.drawable.img)
+                binding.img2.setImageResource(R.drawable.img_1)
+                changer = !changer
+            } else {
+                binding.img1.setImageResource(R.drawable.img_1)
+                binding.img2.setImageResource(R.drawable.img)
+                changer = !changer
+            }
+        }
 
         binding.btnMic.setOnClickListener {
             startSpeechToText()
@@ -83,7 +94,7 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
                 } else {
                     this@DictionaryScreen.query = query
                     adapter.updateQuery(query)
-                    vm.getWordsByQuery(query)
+                    vm.getWordsByQuery(changer, query)
                 }
                 return true
             }
@@ -96,13 +107,11 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
                 } else {
                     this@DictionaryScreen.query = newText
                     adapter.updateQuery(newText)
-                    vm.getWordsByQuery(newText)
+                    vm.getWordsByQuery(isChanged = changer, newText)
                 }
                 return true
             }
         })
-
-
 
         binding.searchView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -110,7 +119,7 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
                 if (currentQuery.isEmpty()) {
                     vm.getAllWords()
                 } else {
-                    vm.getWordsByQuery(currentQuery)
+                    vm.getWordsByQuery(changer , currentQuery)
                 }
             }
             false
@@ -120,6 +129,7 @@ class DictionaryScreen : Fragment(R.layout.screen_dictionary), TextToSpeech.OnIn
 
     private val wordCursorObserver = Observer<Cursor> { newCursor ->
         adapter.setCursor(newCursor)
+        binding.recycler.scrollToPosition(adapterPosition)
     }
 
     private val openDetailObserver = Observer<DictionaryEntity> {

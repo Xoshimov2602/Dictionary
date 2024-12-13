@@ -1,14 +1,11 @@
 package com.example.dictionary.source.repository
 
 import android.database.Cursor
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.dictionary.source.dao.DictionaryDao
 import com.example.dictionary.source.entity.DictionaryEntity
 
 class AppRepositoryImpl(private val dictionaryDao: DictionaryDao) : AppRepository {
-
-
     companion object {
         private lateinit var appRepository: AppRepository
 
@@ -37,7 +34,8 @@ class AppRepositoryImpl(private val dictionaryDao: DictionaryDao) : AppRepositor
         return dictionaryEntity.id
     }
 
-    override fun getWordsByQuery(query: String): Cursor {
-        return dictionaryDao.allWordsByQuery(query)
+    override fun getWordsByQuery(iChanged : Boolean, query: String): Cursor {
+        return if (iChanged) dictionaryDao.getWordsByUzbQuery(query)
+        else dictionaryDao.allWordsByQuery(query)
     }
 }

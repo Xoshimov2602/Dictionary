@@ -10,11 +10,11 @@ interface DictionaryViewModel {
     val textOut: LiveData<String>
     val textIn: LiveData<Unit>
 
-    fun updateItem(da: DictionaryEntity)
+    fun updateItem(isChanged : Boolean, query: String,da: DictionaryEntity)
     fun getAllWords()
     fun openDetails(data: DictionaryEntity)
     fun textOut(word: String)
     fun convertSpeechToText()
-    fun getWordsByQuery (query : String)
+    fun getWordsByQuery ( isChanged : Boolean ,query : String)
 
 }

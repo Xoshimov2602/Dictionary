@@ -21,6 +21,9 @@ interface DictionaryDao {
     @Query("SELECT * FROM dictionary WHERE dictionary.english LIKE:text || '%'")
     fun allWordsByQuery(text: String): Cursor
 
+    @Query("select * from dictionary where dictionary.uzbek like:words || '%'")
+    fun getWordsByUzbQuery(words:String) : Cursor
+
     @Query("select * from dictionary where dictionary.is_favourite = 1")
     fun getAllSelected(): List<DictionaryEntity>
 

@@ -23,10 +23,10 @@ class DictionaryViewModelImpl : DictionaryViewModel, ViewModel() {
     override val textOut = MutableLiveData<String>()
     override val textIn = MutableLiveData<Unit>()
 
-    override fun updateItem(dictionaryEntity: DictionaryEntity)  {
+    override fun updateItem(isChanged : Boolean , query: String,dictionaryEntity: DictionaryEntity)  {
        val updated =  repository.update(dictionaryEntity.copy(isFavourite = dictionaryEntity.isFavourite?.xor(1)))
-        wordCursorLiveData.value = repository.getCursor()
-        repository.getWordById(updated)
+        wordCursorLiveData.value = repository.getWordsByQuery(isChanged, query)
+//        repository.getWordById(updated)
     }
 
     override fun getAllWords() {
@@ -52,9 +52,7 @@ class DictionaryViewModelImpl : DictionaryViewModel, ViewModel() {
         }
     }
 
-    override fun getWordsByQuery(query: String) {
-        wordCursorLiveData.value = repository.getWordsByQuery(query)
+    override fun getWordsByQuery( isChanged : Boolean, query: String) {
+        wordCursorLiveData.value = repository.getWordsByQuery(isChanged, query)
     }
-
-
 }
