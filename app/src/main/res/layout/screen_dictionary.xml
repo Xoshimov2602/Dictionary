@@ -39,8 +39,8 @@
             android:background="@drawable/bg_search_view"
             android:focusable="true"
             app:iconifiedByDefault="false"
+            app:layout_constraintEnd_toStartOf="@id/btn_mic"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ic_language_changer"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.skydoves.elasticviews.ElasticImageView
@@ -48,13 +48,15 @@
             android:layout_width="46dp"
             android:layout_height="0dp"
             android:layout_gravity="end|bottom"
+            android:background="@drawable/bg_search_view"
             android:padding="10dp"
             android:src="@drawable/ic_mic"
             android:tint="#3F51B5"
             app:imageView_duration="200"
+            android:layout_marginEnd="16dp"
             app:imageView_scale="0.7"
             app:layout_constraintBottom_toBottomOf="@id/searchView"
-            app:layout_constraintEnd_toEndOf="@id/searchView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/searchView" />
 
         <com.skydoves.elasticviews.ElasticLayout
@@ -63,11 +65,10 @@
             android:layout_height="46dp"
             app:imageView_duration="200"
             app:imageView_scale="0.7"
-            android:layout_marginEnd="6dp"
-            app:layout_constraintBottom_toBottomOf="@id/searchView"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="6dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/searchView"
-            app:layout_constraintTop_toTopOf="@id/searchView">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

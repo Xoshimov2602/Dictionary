@@ -75,4 +75,6 @@ dependencies {
 //    implementation ("com.github.tapadoo:alerter:7.2.4")
     //lottie animation
     implementation ("com.airbnb.android:lottie:6.6.0")
+
+    implementation("com.github.skydoves:balloon:1.6.11")
 }

@@ -1,6 +1,7 @@
 package com.example.dictionary.presentation.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -24,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         val navController = binding.fragmentContainer.getFragment<NavHostFragment>().navController
         navigation = binding.bottomNav
 
@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         selectedNavigation = SelectedScreen()
 
         navigation.setupWithNavController(navController)
-
-
 
         val bottomNavigationScreens = setOf(
             R.id.detailsScreen,
@@ -44,9 +42,9 @@ class MainActivity : AppCompatActivity() {
             if (bottomNavigationScreens.contains(destinaton.id)) {
                 binding.bottomNav.visibility = View.GONE
             } else {
+
                 binding.bottomNav.visibility = View.VISIBLE
             }
         }
-
     }
 }

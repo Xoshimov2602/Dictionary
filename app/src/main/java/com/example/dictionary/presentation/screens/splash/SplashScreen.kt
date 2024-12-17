@@ -16,14 +16,19 @@ import kotlinx.coroutines.launch
 class SplashScreen : Fragment(R.layout.screen_splash) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        object :CountDownTimer(3000, 1000) {
-            override fun onTick(p0: Long) {
+//        object :CountDownTimer(3000, 1000) {
+//            override fun onTick(p0: Long) {
+//
+//            }
+//
+//            override fun onFinish() {
+//                findNavController().navigate(SplashScreenDirections.actionSplashScreenToDictionaryScreen2())
+//            }
+//        }.start()
 
-            }
-
-            override fun onFinish() {
-                findNavController().navigate(SplashScreenDirections.actionSplashScreenToDictionaryScreen2())
-            }
-        }.start()
+        lifecycleScope.launch {
+            delay(2500)
+            findNavController().navigate(SplashScreenDirections.actionSplashScreenToDictionaryScreen2())
+        }
     }
 }

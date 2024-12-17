@@ -1,6 +1,7 @@
 package com.example.dictionary.presentation.screens.details
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -17,6 +18,10 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.dictionary.R
 import com.example.dictionary.databinding.ScreenDetailsBinding
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import java.util.Locale
 
 class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitListener {
@@ -91,7 +96,6 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
                     )
                 rotateAnimator.duration = 200
                 rotateAnimator.start()
-
             }
 
             copyEnglish.setOnClickListener {
@@ -131,7 +135,25 @@ class DetailsScreen : Fragment(R.layout.screen_details), TextToSpeech.OnInitList
         } else Toast.makeText(requireContext(), "FAIL", Toast.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("ResourceAsColor")
     private val copyObserver = Observer<String> {
-        Toast.makeText(requireContext(), "$it copied to clipboard", Toast.LENGTH_SHORT).show()
+        Balloon.Builder(requireContext())
+//            .setHeight(BalloonSizeSpec.WRAP)
+            .setText("$it copied to clipboard")
+            .setTextColorResource(R.color.dark_blue)
+            .setTextSize(15f)
+            .setIconDrawableResource(R.drawable.ic_copy)
+            .setIconColor(R.color.dark_blue)
+            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            .setArrowSize(10)
+            .setArrowPosition(0.5f)
+            .setPadding(12)
+            .setCornerRadius(8f)
+            .setBackgroundColorResource(R.color.white)
+            .setBalloonAnimation(BalloonAnimation.ELASTIC)
+            .setAutoDismissDuration(1500L)
+            .build()
+            .showAlignBottom(binding.copyEnglish)
+
     }
 }

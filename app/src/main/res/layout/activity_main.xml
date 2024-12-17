@@ -24,7 +24,6 @@
             android:id="@+id/bottom_nav"
             android:background="#FFFFFF"
             app:itemTextColor="@color/white"
-
             app:itemBackground="@drawable/item_background"
             app:backgroundTint="@color/dark_blue"
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
